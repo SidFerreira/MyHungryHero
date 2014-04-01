@@ -6,6 +6,7 @@ import flash.display.Bitmap;
 import flash.utils.Dictionary;
 
 import starling.textures.Texture;
+import starling.textures.TextureAtlas;
 
 public class Assets {
         [Embed(source="../media/graphics/bgWelcome.jpg")]
@@ -24,6 +25,24 @@ public class Assets {
         public static const WelcomeAboutBtn:Class;
 
         private static var gameTextures:Dictionary = new Dictionary();
+
+        private static var gameTextureAtlas:TextureAtlas;
+
+        [Embed(source="../media/graphics/mySpritesheet.png")]
+        public static const AtlasTextureGame:Class;
+
+        [Embed(source="../media/graphics/mySpritesheet.xml", mimeType="application/octet-stream")]
+        public static const AtlasXmlGame:Class;
+
+        public static function getAtlas():TextureAtlas {
+            if(gameTextureAtlas == null) {
+                var texture:Texture = getTexture("AtlasTextureGame");
+                var atlasXml:XML = XML(new AtlasXmlGame());
+                gameTextureAtlas = new TextureAtlas(texture, atlasXml);
+            }
+
+            return gameTextureAtlas;
+        }
 
         public static function getTexture(name:String):Texture
         {
