@@ -4,6 +4,8 @@
 package screens {
 import com.greensock.TweenLite;
 
+import events.NavigationEvent;
+
 import starling.display.Button;
     import starling.display.Image;
     import starling.display.Sprite;
@@ -37,12 +39,12 @@ import starling.display.Button;
             bg = new Image(Assets.getTexture("BgWelcome"));
             addChild(bg);
 
-            title = new Image(Assets.getTexture("WelcomeTitle"));
+            title = new Image(Assets.getAtlas().getTexture("welcome_title"));
             title.x = 440;
             title.y = 20;
             addChild(title);
 
-            hero = new Image(Assets.getTexture("WelcomeHero"));
+            hero = new Image(Assets.getAtlas().getTexture("welcome_hero"));
             hero.x = - hero.width;
             hero.y = 100;
             addChild(hero);
@@ -51,15 +53,26 @@ import starling.display.Button;
              * Buttons
              */
 
-            playBtn = new Button(Assets.getTexture("WelcomePlayBtn"));
+            playBtn = new Button(Assets.getAtlas().getTexture("welcome_playButton"));
             playBtn.x = 500;
             playBtn.y = 260;
             addChild(playBtn);
 
-            aboutBtn = new Button(Assets.getTexture("WelcomeAboutBtn"));
+            aboutBtn = new Button(Assets.getAtlas().getTexture("welcome_aboutButton"));
             aboutBtn.x = 410;
             aboutBtn.y = 380;
             addChild(aboutBtn);
+
+            addEventListener(Event.TRIGGERED, onMainMenuClicked);
+        }
+
+        private function onMainMenuClicked(event:Event):void {
+            var buttonClicked:Button = event.target as Button;
+            if(buttonClicked == playBtn) {
+                dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, true, {id: "play"}));
+            } else if(buttonClicked == aboutBtn) {
+                dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, true, {id: "about"}));
+            }
         }
 
         public function initialize():void {
@@ -79,5 +92,10 @@ import starling.display.Button;
             aboutBtn.y = 380 + (Math.cos(currentDate.getTime() * 0.002) * 10);
         }
 
+        public function disposeTemporarily():void {
+            visible = false;
+            if(hasEventListener(Event.ENTER_FRAME))
+                removeEventListener(Event.ENTER_FRAME, heroFloatingAnimation);
+        }
     }
 }

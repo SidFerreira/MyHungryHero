@@ -14,7 +14,7 @@ public class MyHungryHero extends Sprite {
     private var myStarling:Starling;
 
     public function MyHungryHero() {
-        myStarling = new Starling(InGame, stage);
+        myStarling = new Starling(Game, stage);
         myStarling.antiAliasing = 1;
         myStarling.start();
     }
